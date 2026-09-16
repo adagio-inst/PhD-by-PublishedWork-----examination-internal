@@ -17,14 +17,36 @@
 
 ## Submitted portfolio
 
-| ID | Work | Date | Submission version | Technical report | Candidate response | Status |
-|---|---|---:|---|---|---|---|
-| P01 | The Incompleteness of the Instantaneous State and the Status of Chapman-Kolmogorov Divisibility: Analysis from Limits, Relativity, and Renormalization | June 2026 | Original received version | Pending registration | — | Received |
-| P02 | Koopman Spectral Theory for Indivisible Stochastic Processes | July 2026 | v2 | Pending registration | — | Received |
-| P03 | Convex Perturbation and the Suppression of the Indivisibility Deficit | July 2026 | Original received version | Pending registration | — | Received |
-| P04 | Selection Functionals on Path Space for Stochastic Processes Without a Generator: Finite-Grid Gibbs Selection and Self-Normalized Estimation | July 2026 | Original received version | Pending registration | — | Received |
-| P05 | Memory Rank and Liftability of Transition Families Without a Generator: A Projection Theory for the Indivisibility Deficit | July 2026 | Original received version | Pending registration | — | Received |
-| P06 | Memory Production under Coarse-Graining: A Balance Law for the Indivisibility Deficit | July 2026 | Original received version | Pending registration | — | Received |
+| Work ID | Current document ID | Work | Versions received | Technical report | Candidate response | Status |
+|---|---|---|---|---|---|---|
+| P01 | P01-v2 | The Physics of the Instant Analysis from Limits, Relativity, and Renormalization | P01-v1; P01-v2 | Pending registration | — | Revised version received |
+| P02 | P02-v2 | Koopman Spectral Theory for Indivisible Stochastic Processes | P02-v1; P02-v2 | Pending registration | — | Revised version received |
+| P03 | P03-v1 | Convex Perturbation and the Suppression of the Indivisibility Deficit | P03-v1 | Pending registration | — | Received |
+| P04 | P04-v1 | Selection Functionals on Path Space for Stochastic Processes Without a Generator: Finite-Grid Gibbs Selection and Self-Normalized Estimation | P04-v1 | Pending registration | — | Received |
+| P05 | P05-v1 | Memory Rank and Liftability of Transition Families Without a Generator: A Projection Theory for the Indivisibility Deficit | P05-v1 | Pending registration | — | Received |
+| P06 | P06-v1 | Memory Production under Coarse-Graining: A Balance Law for the Indivisibility Deficit | P06-v1 | Pending registration | — | Received |
+
+## Version history
+
+| Document ID | Filename | Title | Relationship |
+|---|---|---|---|
+| P01-v1 | `P01.pdf` | The Incompleteness of the Instantaneous State and the Status of Chapman-Kolmogorov Divisibility Analysis from Limits, Relativity, and Renormalization | Initial version of P01 |
+| P01-v2 | `P01_v2.pdf` | The Physics of the Instant Analysis from Limits, Relativity, and Renormalization | Revised and retitled version of P01 |
+| P02-v1 | `P02.pdf` | Koopman Spectral Theory for Indivisible Stochastic Processes | Initial version of P02 |
+| P02-v2 | `P02_v2.pdf` | Koopman Spectral Theory for Indivisible Stochastic Processes | Revised version of P02 |
+| P03-v1 | `P03.pdf` | Convex Perturbation and the Suppression of the Indivisibility Deficit | Initial version of P03 |
+| P04-v1 | `P04.pdf` | Selection Functionals on Path Space for Stochastic Processes Without a Generator: Finite-Grid Gibbs Selection and Self-Normalized Estimation | Initial version of P04 |
+| P05-v1 | `P05.pdf` | Memory Rank and Liftability of Transition Families Without a Generator: A Projection Theory for the Indivisibility Deficit | Initial version of P05 |
+| P06-v1 | `P06.pdf` | Memory Production under Coarse-Graining: A Balance Law for the Indivisibility Deficit | Initial version of P06 |
+
+## Version-control rule
+
+Every work has a stable `work_id`, while each submitted version has its own
+`document_id`. Earlier versions must be preserved and must never be overwritten.
+
+A revised submission does not erase or replace the examination record associated
+with an earlier version. Every technical report must identify the exact
+`document_id` examined.
 
 ## Examination sequence
 
