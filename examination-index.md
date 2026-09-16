@@ -28,16 +28,16 @@
 
 ## Version history
 
-| Document ID | Filename | Title | Relationship |
-|---|---|---|---|
-| P01-v1 | `P01.pdf` | The Incompleteness of the Instantaneous State and the Status of Chapman-Kolmogorov Divisibility Analysis from Limits, Relativity, and Renormalization | Initial version of P01 |
-| P01-v2 | `P01_v2.pdf` | The Physics of the Instant Analysis from Limits, Relativity, and Renormalization | Revised and retitled version of P01 |
-| P02-v1 | `P02.pdf` | Koopman Spectral Theory for Indivisible Stochastic Processes | Initial version of P02 |
-| P02-v2 | `P02_v2.pdf` | Koopman Spectral Theory for Indivisible Stochastic Processes | Revised version of P02 |
-| P03-v1 | `P03.pdf` | Convex Perturbation and the Suppression of the Indivisibility Deficit | Initial version of P03 |
-| P04-v1 | `P04.pdf` | Selection Functionals on Path Space for Stochastic Processes Without a Generator: Finite-Grid Gibbs Selection and Self-Normalized Estimation | Initial version of P04 |
-| P05-v1 | `P05.pdf` | Memory Rank and Liftability of Transition Families Without a Generator: A Projection Theory for the Indivisibility Deficit | Initial version of P05 |
-| P06-v1 | `P06.pdf` | Memory Production under Coarse-Graining: A Balance Law for the Indivisibility Deficit | Initial version of P06 |
+| Document ID | Filename | Date | Title | Relationship |
+|---|---|---:|---|---|
+| P01-v1 | `P01.pdf` | June 2026 | The Incompleteness of the Instantaneous State and the Status of Chapman-Kolmogorov Divisibility Analysis from Limits, Relativity, and Renormalization | Initial version of P01 |
+| P01-v2 | `P01_v2.pdf` | September 2026 | The Physics of the Instant Analysis from Limits, Relativity, and Renormalization | Revised and retitled version of P01 |
+| P02-v1 | `P02.pdf` | July 2026 | Koopman Spectral Theory for Indivisible Stochastic Processes | Initial version of P02 |
+| P02-v2 | `P02_v2.pdf` | July 2026 | Koopman Spectral Theory for Indivisible Stochastic Processes | Revised version of P02 |
+| P03-v1 | `P03.pdf` | July 2026 | Convex Perturbation and the Suppression of the Indivisibility Deficit | Initial version of P03 |
+| P04-v1 | `P04.pdf` | July 2026 | Selection Functionals on Path Space for Stochastic Processes Without a Generator: Finite-Grid Gibbs Selection and Self-Normalized Estimation | Initial version of P04 |
+| P05-v1 | `P05.pdf` | July 2026 | Memory Rank and Liftability of Transition Families Without a Generator: A Projection Theory for the Indivisibility Deficit | Initial version of P05 |
+| P06-v1 | `P06.pdf` | July 2026 | Memory Production under Coarse-Graining: A Balance Law for the Indivisibility Deficit | Initial version of P06 |
 
 ## Version-control rule
 
