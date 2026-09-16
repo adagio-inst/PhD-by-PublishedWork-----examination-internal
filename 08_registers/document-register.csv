@@ -1,1 +1,11 @@
-document_id,document_type,original_filename,registered_filename,author,date,version,status,sha256
+work_id,document_id,filename,title,author,date,version,relationship,status,sha256
+P01,P01-v1,P01.pdf,"The Incompleteness of the Instantaneous State and the Status of Chapman-Kolmogorov Divisibility Analysis from Limits, Relativity, and Renormalization","B. D. Summers",2026-06,v1,"Initial version of P01",Registered,66cac58b508355f45f74b7680d98cc61ebd38f5123404045740d0c1562307de2
+P01,P01-v2,P01_v2.pdf,"The Physics of the Instant Analysis from Limits, Relativity, and Renormalization","B. D. Summers",2026-09,v2,"Revised and retitled version of P01",Registered,b49a0cd639528ebfef7b6317a01fc84b9be681183dfe40308511ae7d4019e8f9
+P02,P02-v1,P02.pdf,"Koopman Spectral Theory for Indivisible Stochastic Processes","Benjamin D. Summers",2026-07,v1,"Initial version of P02",Registered,24aed6281c4e41f898fed25c3665258c586bbcf8ec63854a1959f5e9285f688a
+P02,P02-v2,P02_v2.pdf,"Koopman Spectral Theory for Indivisible Stochastic Processes","Benjamin D. Summers",2026-07,v2,"Revised version of P02",Registered,783bb7a0a1789cd59a264fc1d0c7dffaf4e70c3e4eb3ce14f36f58c9a6af9448
+P03,P03-v1,P03.pdf,"Convex Perturbation and the Suppression of the Indivisibility Deficit","Benjamin D. Summers",2026-07,v1,"Initial version of P03",Registered,eaa283dab47a0e0f0b7d0dacd18bfd0f71181b3c4aeb56eab820ac6e4edf758d
+P04,P04-v1,P04.pdf,"Selection Functionals on Path Space for Stochastic Processes Without a Generator: Finite-Grid Gibbs Selection and Self-Normalized Estimation","Benjamin D. Summers",2026-07,v1,"Initial version of P04",Registered,8c5ae69ac981f51c1fc33224c209eaf735a73a977d1d98d9a6db46827419b736
+P05,P05-v1,P05.pdf,"Memory Rank and Liftability of Transition Families Without a Generator: A Projection Theory for the Indivisibility Deficit","Benjamin D. Summers",2026-07,v1,"Initial version of P05",Registered,ee365635355d64d87a1d8cc6817e63285da61343c5d50f2f447bd33c98c508c0
+P06,P06-v1,P06.pdf,"Memory Production under Coarse-Graining: A Balance Law for the Indivisibility Deficit","Benjamin D. Summers",2026-07,v1,"Initial version of P06",Registered,e16588375fdc91e09bba8f2166d039f05382b1d0eff3b2721f41a424ec901827
+GOV01,GOV01-v1,GOV01_Adagio-PhD-Mathematical-Physics-Stochastic-Quantum-Theory.pdf,"Adagio PhD in Mathematical Physics - Stochastic Quantum Theory Concentration","Adagio Institute Inc.",2026,v1,"Governing document",Registered,d1edc5df7e2f8db2fe56c9a8d897e9df06bb7a6f3d42e5e3b341580af7a86cb7
+
