@@ -1,0 +1,407 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TECHNICAL EVALUATION REPORT -- TEMPLATE
+%% ---------------------------------------------------------------------------
+%% Reusable skeleton for single-paper technical evaluation reports that are
+%% later integrated into a Doctoral Examination Report.
+%%
+%% Compile with:  pdflatex main.tex  (run twice for the ToC and cross-refs)
+%% Requirements:  a standard TeX Live installation; no external .sty files.
+%%
+%% HOW TO USE
+%%   1. Edit the METADATA block below (title, author, version examined, dates).
+%%   2. Set \pk to a short key for this paper (used to namespace all labels).
+%%   3. Fill the skeleton sections. Commented examples show the intended form.
+%%   4. Toggle \verificationtrue / \verificationfalse to include or suppress
+%%      the independent-verification appendix, and \draftnotestrue to show
+%%      internal notes while drafting.
+%%
+%% CONVENTIONS ENCODED HERE
+%%   [M] = bears on correctness or the substance of a claim.
+%%   [R] = bears on presentation, attribution or scope.
+%%   Every substantive defect is stated once as a numbered Finding, then
+%%   referenced (never restated in full) in the summary, the criticisms list
+%%   and the conclusion.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{} % optional; degrades gracefully
+\usepackage[margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[expansion=false]{microtype}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADATA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Edit only this block when starting a new report.
+
+\newcommand{\reportKind}{TECHNICAL EVALUATION REPORT}
+\newcommand{\paperTitle}{Full Title of the Manuscript Under Review:
+                         Subtitle if Any}
+\newcommand{\paperShortTitle}{Short Running Title}      % used in the header
+\newcommand{\paperAuthor}{A. N. Author}
+\newcommand{\paperVersion}{Version examined: \url{http://dx.doi.org/10.xxxx/ssrn.xxxxxxx}
+                           (Month Day, Year)}
+\newcommand{\evalDate}{Evaluation date: DD Month YYYY}
+\newcommand{\evalContext}{Prepared as part of the technical examination of a
+  portfolio submitted for the Ph.D. in Mathematical Physics by Published Works}
+\newcommand{\reportStatus}{Working technical report for later integration into
+  the Doctoral Examination Report}
+
+%% Label namespace for this paper: all findings are labelled \pk:f:<name>,
+%% so that reports can be concatenated without label collisions.
+\newcommand{\pk}{P0}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOGGLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\ifverification   \verificationtrue   % include the verification appendix
+\newif\ifclassification \classificationtrue % include the result-by-result table
+\newif\ifdraftnotes     \draftnotesfalse    % show internal drafting notes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Severity markers.
+\newcommand{\defM}{\textbf{[M]}}   % material: correctness or substance
+\newcommand{\defR}{\textbf{[R]}}   % remark: presentation, attribution, scope
+
+%% Findings: state once, reference everywhere else.
+\theoremstyle{definition}
+\newtheorem{finding}{Finding}
+\newtheorem*{remarkE}{Remark}
+
+\newcommand{\flabel}[1]{\label{\pk:f:#1}}          % inside a finding
+\newcommand{\fref}[1]{Finding~\ref{\pk:f:#1}}      % anywhere else
+\newcommand{\fpref}[1]{(\fref{#1})}
+
+%% Internal notes, invisible unless \draftnotestrue.
+\newcommand{\note}[1]{\ifdraftnotes\textcolor{red}{\small[\,#1\,]}\fi}
+
+%% Shorthands commonly needed in this series. Extend per paper.
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inner}[2]{\langle #1 , #2 \rangle}
+
+%% "\S" references always point at the manuscript under review, never at this
+%% report; this macro makes that explicit and greppable.
+\newcommand{\ms}[1]{\S#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PAGE STYLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Technical Evaluation}
+\fancyhead[R]{\small\itshape \paperShortTitle}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\LARGE\bfseries \reportKind\par}
+\vspace{1.2cm}
+{\Large\bfseries \paperTitle\par}
+\vspace{0.7cm}
+{\large \paperAuthor\par}
+\vspace{1.4cm}
+{\normalsize \paperVersion\par}
+\vspace{1cm}
+{\itshape \evalContext\par}
+\vfill
+{\evalDate\par}
+\vspace{0.8cm}
+{\bfseries Status: \reportStatus\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary of the submission}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% One paragraph: the question the paper asks and the form of its answer.
+%% Then one paragraph tracing the architecture section by section, so that a
+%% reader who has not read the manuscript can follow the rest of this report.
+%% Close by naming the evaluation standard actually applied and what was done
+%% to test the paper against it.
+
+The paper asks \note{question} and answers with \note{form of the answer}.
+
+The argument proceeds in \note{n} stages. \ms{2} fixes the setting: \note{\dots}
+\ms{3} \note{\dots} \ms{4} \note{\dots} \ms{5} \note{\dots}
+
+The primary evaluation criteria applied here are logical consistency with a
+testable hypothesis and empirical reproducibility. \note{State what the paper
+claims about its own verifiability, and what was done to test that claim ---
+independent re-derivation, exact arithmetic, simulation replication, data
+re-analysis, as applicable.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Overall assessment}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Structure enforced here, in this order:
+%%   (a) verdict on correctness and reproducibility, with the evidence;
+%%   (b) what the paper does well, itemised, before any criticism;
+%%   (c) the material defects, one short paragraph each, each pointing at the
+%%       Finding that states it in full;
+%%   (d) the minor items, as a list.
+%% Nothing in this section should be argued for the first time: it is a map.
+
+\paragraph{Correctness and reproducibility.}
+\note{Verdict in one sentence, then the evidence.} The following components
+were recomputed and confirmed:
+\begin{itemize}
+  \item \note{quantity, with its exact value}
+  \item \note{quantity, with its exact value}
+\end{itemize}
+\note{Say explicitly what kind of check was performed --- exact rational
+arithmetic, floating point with a stated tolerance, symbolic re-derivation, or
+by hand --- and what a zero residual does and does not establish.}
+
+\paragraph{Features that deserve notice.}
+\begin{itemize}
+  \item \textit{\note{Label}.} \note{One or two sentences.}
+  \item \textit{\note{Label}.} \note{One or two sentences.}
+\end{itemize}
+
+\paragraph{Material defects.}
+The following discrepancies between what is proved and what is announced are
+recorded. \note{State whether any touches a theorem.}
+
+\note{One short paragraph per material finding, each ending with a pointer:}
+\fpref{key-one}.
+
+\paragraph{Minor items.}
+\begin{itemize}
+  \item \note{item} \fpref{key-two}
+  \item \note{item}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Section-by-section analysis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% One subsection per section of the manuscript. Within each, use
+%% \paragraph{...} headings that state the verdict on a single result, so the
+%% reader can scan the verdicts without reading the arguments. Findings are
+%% raised here, at the point where the evidence for them appears.
+
+\subsection{Setting and definitions (\ms{2})}
+
+\paragraph{Proposition 2.2 is correct.} \note{Reproduce the step that matters,
+not the whole proof. Say which identities the proof uses and why they hold.}
+
+\paragraph{Lemma 2.3 is correct.} \note{Verdict, then the verification: what was
+recomputed, on what instances, with what residual.}
+
+%% --- Example of a fully formed finding; delete or adapt. ---------------------
+\begin{finding}[One-line statement of the defect, not of the topic]\flabel{key-one}
+\note{Quote or paraphrase precisely what the manuscript claims, with its
+location. Then state what is actually the case, with the evidence. Then state
+the consequence: what breaks, what does not, and what the repair is. A finding
+that does not end with a repair is incomplete.}
+\defM
+\end{finding}
+%% ----------------------------------------------------------------------------
+
+\subsection{Main construction (\ms{3}--\ms{4})}
+
+\paragraph{Theorem 4.2 is correct, and is an identity.} \note{\dots}
+
+\subsection{Interpretation and connections (\ms{5})}
+
+\paragraph{\note{Claim made in passing}.} \note{Claims made in passing are held
+to the same standard as theorems, and are the usual source of [R] items.}
+\defR
+
+\subsection{Sharpness and limiting cases (\ms{6})}
+
+\begin{finding}[\note{Statement}]\flabel{key-two}
+\note{\dots}
+\defR
+\end{finding}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Originality: what is new and what is standard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Three paragraphs, always in this order. The first protects the author from
+%% the charge of claiming known material; the second states the contribution in
+%% the evaluator's own words; the third places the work on a level.
+
+\paragraph{Standard, and correctly attributed.} \note{Enumerate the inherited
+apparatus and say whether each is cited at its point of use.}
+
+\paragraph{The paper's own.} \note{Enumerate the contributions that survive the
+audit, one clause each, and say for each what makes it non-obvious.}
+
+\paragraph{Level.} \note{What kind of work this is, what machinery it requires,
+and where its originality actually lies.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Priority in the literature}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Antecedents the manuscript does not cite, each with a full reference, a
+%% statement of what is genuinely shared, and a statement of what remains the
+%% paper's own. Positioning items sharpen a claim; they should never be written
+%% as accusations of overlap.
+
+\begin{finding}[\note{n} positioning items are missing]\flabel{priority}
+\emph{\note{Antecedent one}.} \note{Author, title, journal, volume, year, pages.
+What is shared. What is different. Why making the comparison would sharpen
+rather than dilute the claim.}
+
+\emph{\note{Antecedent two}.} \note{\dots}
+\defR
+\end{finding}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \ifclassification
+% \section{Result-by-result classification}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% One row per component of the manuscript. Weight is the component's load in
+% %% the paper's own architecture (Major / Substantial / Moderate / Minor /
+% %% Supporting), not the severity of any defect.
+
+% {\small
+% \begin{longtable}{@{}p{3.0cm}p{2.5cm}p{2.6cm}p{1.9cm}p{3.0cm}@{}}
+% \toprule
+% \textbf{Component} & \textbf{Correctness} & \textbf{Originality} &
+% \textbf{Weight} & \textbf{Recommended action}\\
+% \midrule
+% \endfirsthead
+% \toprule
+% \textbf{Component} & \textbf{Correctness} & \textbf{Originality} &
+% \textbf{Weight} & \textbf{Recommended action}\\
+% \midrule
+% \endhead
+% \bottomrule
+% \endfoot
+% \bottomrule
+% \endlastfoot
+% \note{Definition / metric} & \textbf{Correct; load-bearing} & The paper's own &
+% \textbf{Major} & \note{Action} \fpref{key-one}\\[0.3em]
+% \note{Lemma 2.3} & \textbf{Correct; verified} & Moderate & Substantial & None
+% material\\[0.3em]
+% \note{Claim made in passing} & Unsupported as stated & --- & Minor & Present as
+% an analogy\\[0.3em]
+% Reproducibility & \note{verdict} & --- & \textbf{Major} & \note{action}\\
+% \end{longtable}}
+% \fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Specific criticisms}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The actionable list, [M] items first. Each entry is one sentence of defect
+%% plus one clause of repair, with a pointer to the Finding. Nothing new is
+%% argued here.
+
+Items are marked \defM\ where they bear on the correctness or the substance of a
+claim, and \defR\ where they concern presentation, attribution or scope.
+
+\begin{description}[leftmargin=2.4em,style=nextline]
+\item[\defM\ \note{One-line statement of the defect}]
+  \fpref{key-one}. \note{Repair in one clause.}
+\item[\defR\ \note{One-line statement of the defect}]
+  \fpref{key-two}. \note{Repair in one clause.}
+\item[\defR\ \note{Positioning}] \fpref{priority}.
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Questions to the author}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Written for a viva: each question is answerable, points at a specific object
+%% in the manuscript, and carries the evaluator's own computation where one was
+%% made. Order: material defects first, then scope, then open problems.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \note{Question bearing on a material finding, with the evaluator's
+      counter-computation stated as a number.}
+\item \note{Question on scope or on a hypothesis silently dropped.}
+\item \note{Question inviting the author to extend the work at a point the
+      audit identified as tractable.}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Technical conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Four paragraphs: what was verified and how; what the architecture achieves;
+%% the material defects gathered in one place with their weight stated; the
+%% residual matters of scope. The conclusion must be readable standing alone,
+%% because it is what gets carried into the integrative report.
+
+\note{Paragraph 1 --- verification and reproducibility.}
+
+\note{Paragraph 2 --- the architecture and what is genuinely new.}
+
+\note{Paragraph 3 --- the material defects, and whether any touches a theorem.}
+
+\note{Paragraph 4 --- matters of scope, positioning and terminology.}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \ifverification
+% \appendix
+% \section{Independent verification record}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% The audit trail. State the arithmetic regime once, then one row per claim
+% %% checked, including the checks that returned a negative result --- those are
+% %% the rows that carry the findings.
+
+% All computations were performed from the printed definitions alone.
+
+% \begin{center}
+% {\small
+% \begin{longtable}{@{}p{6.0cm}p{4.0cm}p{4.3cm}@{}}
+% \toprule
+% \textbf{Claim} & \textbf{Method} & \textbf{Outcome}\\
+% \midrule
+% \endfirsthead
+% \toprule
+% \textbf{Claim} & \textbf{Method} & \textbf{Outcome}\\
+% \midrule
+% \endhead
+% \bottomrule
+% \endfoot
+% \bottomrule
+% \endlastfoot
+% \note{Example 3.2: displayed matrices} & Exact & As printed\\[0.35em]
+% \note{Lemma 2.3: isometry} & \note{12 random rational families} & Residual
+% exactly $0$\\[0.35em]
+% \note{Counter-check that produced a finding} & \note{method} &
+% \textbf{No}: \note{discrepancy exactly \dots}\\
+% \end{longtable}}
+% \end{center}
+
+% \subsection{\note{Quantified sub-check}}
+% %% Optional: a short table isolating one quantitative claim of the audit, e.g.
+% %% how badly an identity fails under an alternative hypothesis.
+
+% \begin{center}
+% {\small
+% \begin{tabular}{@{}lccc@{}}
+% \toprule
+% \textbf{Trial} & \textbf{\note{regime A}} & \textbf{\note{regime B}} &
+% \textbf{relative gap}\\
+% \midrule
+% 1 & \note{value} & \note{value} & \note{\%}\\
+% 2 & \note{value} & \note{value} & \note{\%}\\
+% \bottomrule
+% \end{tabular}}
+% \end{center}
+% \fi
+
+\end{document}
