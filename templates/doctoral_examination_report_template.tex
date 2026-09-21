@@ -1,0 +1,536 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DOCTORAL EXAMINATION REPORT -- TEMPLATE
+%% ---------------------------------------------------------------------------
+%% Board-facing examination record for a Ph.D. by Published Works. Assembles
+%% the per-paper technical examinations, the candidate's responses beneath each
+%% finding, the Doctoral Examiner's dispositions, the concluding
+%% recommendation, the revision schedule, declarations, and signatures.
+%%
+%% Compile with:  pdflatex main.tex  (run twice for the ToC and cross-refs)
+%% Requirements:  a standard TeX Live installation; no external .sty files.
+%%
+%% HOW TO USE
+%%   1. Edit the METADATA block (institution, degree, people, dates, papers).
+%%   2. Set the TOGGLES (oral examination, exhibits, correspondence paper).
+%%   3. For each paper, copy one of the two PAPER BLOCKS below:
+%%        - Block A: paper examined through review correspondence of record;
+%%        - Block B: paper examined through an itemised technical audit.
+%%   4. Every finding follows the same unit:
+%%        \finding{...}  statement of the finding
+%%        \sev{...}      severity (omit when the finding is an endorsement)
+%%        response env   the candidate's response
+%%        \disposition   the Doctoral Examiner's adjudication
+%%   5. Keep the Revision summary in sync with the dispositions: every
+%%      "scheduled" disposition must have a line there.
+%%
+%% STRUCTURAL RULES ENCODED HERE
+%%   - The two examination questions (Q1, Q2) are stated once in Section 1
+%%     and answered explicitly, in the same words, in the recommendation.
+%%   - Every finding is classified against the governing standard: evidence
+%%     against doctoral competence vs. ordinary product of original research
+%%     corrected through revision.
+%%   - Dispositions in the revision summary use a closed vocabulary:
+%%     corrected / restated / withdrawn / qualified (macros below).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{} % optional; degrades gracefully
+\usepackage[margin=1in]{geometry}
+\usepackage[expansion=false]{microtype} % expansion off: safe without scalable fonts
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=black!70,urlcolor=blue!60!black,citecolor=black]{hyperref}
+
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0em}
+\setlength{\emergencystretch}{2em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADATA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Institution
+\newcommand{\institution}{Institution Name, Inc.}
+\newcommand{\institutionPlace}{City, State, Country}
+\newcommand{\board}{the board of \institution}
+
+%% Degree
+\newcommand{\degreeName}{Doctor of Philosophy in Mathematical Physics}
+\newcommand{\degreeConcentration}{(Concentration Name)}
+\newcommand{\degreeRoute}{by Published Works}
+
+%% Governing regulations
+\newcommand{\regsTitle}{\emph{Title of the Published Regulations}, YYYY Edition}
+\newcommand{\regsDOI}{10.xxxx/zenodo.xxxxxxx}
+\newcommand{\regsWaiverSection}{Section~X.Y} % covering-document waiver clause
+
+%% People
+\newcommand{\candidate}{A. N. Candidate}
+\newcommand{\candidateShort}{A.~N.~Candidate}  % used in the running header
+\newcommand{\examiner}{E. X. Aminer}
+\newcommand{\examinerRole}{Doctoral Examiner}
+\newcommand{\examinerTitle}{Title and Faculty, \institution}
+\newcommand{\examinerAffiliation}{Secondary academic affiliation, University}
+
+%% Dates and status
+\newcommand{\examPeriod}{Month--Month YYYY}
+\newcommand{\reportDate}{Month DD, YYYY}
+\newcommand{\reportStatus}{Final examination report (prepared for signature and
+  archival deposit)}
+
+%% Portfolio size (words, for prose)
+\newcommand{\numPapers}{five}
+\newcommand{\numPapersCap}{Five}
+\newcommand{\minPapers}{three}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOGGLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\iforalexam       \oralexamfalse       % was an oral examination held?
+\newif\ifcorrespondence \correspondencetrue  % is any paper examined through
+                                             % review correspondence of record?
+\newif\ifexhibits       \exhibitstrue        % include the exhibits list
+\newif\ifdraftnotes     \draftnotesfalse     % show internal drafting notes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The unit of the examination record: finding -> severity -> response ->
+%% disposition.
+\newenvironment{response}{%
+  \par\medskip
+  \begin{list}{}{\setlength{\leftmargin}{1.6em}\setlength{\rightmargin}{0.8em}}
+  \item\relax\small\textbf{Candidate's response.}\hspace{0.5em}\ignorespaces}%
+  {\end{list}\par\medskip}
+\newcommand{\sev}[1]{\par\smallskip{\itshape Severity: #1.}\par}
+\newcommand{\disposition}[1]{\par\smallskip\noindent\textbf{\examinerRole's
+  disposition.}\ \emph{#1}\par\medskip}
+\newcommand{\finding}[1]{\subsubsection*{#1}}
+
+%% Per-paper section header: \paperheader{n}{Title}{identifier}{label}
+\newcommand{\paperheader}[4]{%
+  \clearpage
+  \section{Paper #1 examination: #2}\label{#4}
+  \textbf{Manuscript.} \emph{#2.} #3.\par}
+
+%% Closed vocabulary for the revision summary.
+\newcommand{\corrected}{\emph{corrected}}
+\newcommand{\restated}{\emph{restated}}
+\newcommand{\withdrawn}{\emph{withdrawn}}
+\newcommand{\qualified}{\emph{qualified}}
+\newcommand{\rev}[2]{\item #1 --- #2.}  % \rev{what changes}{\corrected}
+
+%% Signature block: \signatureblock{Name}{Role}{extra line(s) or empty}
+\newcommand{\signatureblock}[3]{%
+  \vspace{3.2em}
+  \noindent\begin{tabular}{@{}p{0.55\textwidth}p{0.35\textwidth}@{}}
+  \rule{0.5\textwidth}{0.4pt} & \rule{0.3\textwidth}{0.4pt}\\
+  #1 & Date\\
+  #2 & \\
+  #3
+  \end{tabular}\par}
+
+%% Internal notes, invisible unless \draftnotestrue.
+\newcommand{\note}[1]{\ifdraftnotes\textcolor{red}{\small[\,#1\,]}\fi}
+
+%% Mathematical shorthands used across the portfolio. Extend as needed.
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\CK}{\mathrm{CK}}
+\newcommand{\dist}{\operatorname{dist}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PAGE STYLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Doctoral Examination Report --- \candidateShort}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+\centering
+\vspace*{2em}
+{\scshape\Large \institution}\\[0.25em]
+{\small \institutionPlace}\\
+\vspace{4em}
+{\LARGE\bfseries Doctoral Examination Report}\\[1.2em]
+{\large Examination for the Degree of\\ \degreeName\\ \degreeConcentration\\
+ \degreeRoute}\\
+\vspace{4em}
+\begin{tabular}{r@{\hspace{1em}}l}
+\textbf{Candidate:} & \candidate\\[0.2em]
+\textbf{\examinerRole:} & \examiner\\
+ & \examinerTitle\\
+ & \emph{(also affiliated with \examinerAffiliation)}\\[0.2em]
+\textbf{Examination period:} & \examPeriod\\[0.2em]
+\textbf{Report date:} & \reportDate\\[0.2em]
+\textbf{Status:} & \reportStatus\\
+\end{tabular}
+\vfill
+\begin{minipage}{0.86\textwidth}
+\small This report constitutes the official record of the doctoral examination
+of the candidate's \numPapers-paper portfolio under the Institute's published
+examination regulations for the degree \degreeRoute. It assembles the technical
+examinations of the portfolio, the candidate's responses embedded beneath the
+corresponding findings,\ifcorrespondence\ the review correspondence of record,\fi\
+and the \examinerRole's concluding recommendation.
+\end{minipage}
+\vspace{2em}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+% ====================================================================
+\section{The examination}
+% ====================================================================
+
+\subsection{Governance and process}\label{sec:process}
+
+The examination was conducted under the Institute's published regulations for
+the degree \degreeRoute\ (\institution, \regsTitle, DOI: \regsDOI). The process
+comprises seven steps: (1) publication of the governing regulations;
+(2) submission of a portfolio of published works satisfying the requirement ---
+here, \numPapers\ papers against a \minPapers-preprint minimum; (3) a technical
+examination of each portfolio paper; (4) the candidate's written response to
+every finding; (5) independent review of the examinations, the responses, and
+the underlying manuscripts by the \examinerRole, who makes the recommendation
+recorded in Section~\ref{sec:recommendation}; (6) resolution by \board, from
+which the candidate is recused; and (7) archival of this report and its exhibits
+as a public record.
+\iforalexam
+An oral examination was held on \note{date}; its record is Exhibit~\note{X}.
+\else
+The \examinerRole\ determined that the written record provides a sufficient
+basis for recommendation, and no oral examination was required.
+\fi
+
+%% Describe who prepared each technical examination and in what form.
+\note{State, paper by paper, the form of the technical examination (itemised
+audit, review correspondence, or other), who prepared it, and in what
+capacity. Where a paper was examined through correspondence in which the
+\examinerRole\ acted as reviewer, say so here and deposit the correspondence
+in full as an exhibit.}
+
+\subsection{The questions before the examiner and the governing standard}\label{sec:questions}
+
+The examination is directed at two questions, which the concluding
+recommendation of Section~\ref{sec:recommendation} answers explicitly:
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em]
+\item Has the candidate demonstrated the independent ability to generate
+      original, valuable doctoral-level scholarship?
+\item Do the identified deficiencies materially undermine that demonstration,
+      or are they appropriately addressed through revision?
+\end{enumerate}
+
+The purpose of doctoral examination is to determine whether the candidate has
+demonstrated the independent ability to generate original, valuable scholarship
+at the doctoral level. It is not to determine whether every result survives
+subsequent criticism unchanged. Accordingly, the examination distinguishes
+between deficiencies that are evidence against doctoral competence and
+deficiencies that are the ordinary product of developing original research and
+are appropriately corrected through revision. The object of evaluation
+throughout is the candidate's demonstrated research capability; the manuscripts
+are the evidence. Every finding in this report is classified on that
+distinction.
+
+\subsection{Materials examined}\label{sec:materials}
+
+The portfolio comprises the following works, publicly deposited as preprints and
+examined in the versions of record at the examination date.
+
+\begin{enumerate}[label=\textbf{Paper \arabic*.},leftmargin=5.5em,itemsep=0.35em]
+\item \emph{\note{Title of Paper 1}.} \note{Repository, DOI; earlier versions.}
+\item \emph{\note{Title of Paper 2}.} \note{Repository, DOI.}
+\item \emph{\note{Title of Paper 3}.} \note{Repository, DOI.}
+%% add one \item per paper
+\end{enumerate}
+
+\subsection{Method and disclosure}\label{sec:method}
+
+\note{How the technical examinations were prepared: line-by-line audit,
+independent verification of every computationally checkable claim, and the
+arithmetic regime used. Define ``the examiner'' and ``the \examinerRole'' as
+they are used in the per-paper sections. State the standard to which the
+candidate's responses were prepared and verified. State whether findings are
+reproduced verbatim or in edited form, and that the manuscripts and exhibits
+are incorporated by reference. If any part of the technical examination was
+prepared with the assistance of software tools, including AI systems, state
+which parts and how their output was checked.}
+
+The \examinerRole\ independently reviewed the technical examinations, the
+candidate's responses, and the underlying manuscripts; the terms on which he or
+she adopts the findings of this report are stated in the certification
+(Section~\ref{sec:signatures}).
+
+% ====================================================================
+\section{Executive summary and overall recommendation}
+% ====================================================================
+%% Three paragraphs: (1) the program in one paragraph, one sentence per paper;
+%% (2) what the examinations found, located paper by paper; (3) the
+%% recommendation in one sentence, pointing at Section \ref{sec:recommendation}.
+
+\note{Paragraph 1 --- the research program, one sentence per paper.}
+
+\note{Paragraph 2 --- where the examinations located the defects, paper by
+paper, and how the candidate responded.}
+
+Section~\ref{sec:recommendation} answers the two examination questions on this
+record and recommends \note{outcome}, with this report and its exhibits
+archived as the examination record.
+
+% ====================================================================
+\section{Portfolio assessment}\label{sec:portfolio}
+% ====================================================================
+
+\subsection{What the portfolio establishes}
+
+\note{One paragraph per paper: the contribution that survives examination, and
+what must be corrected. Close with a sentence on the coherence of the
+program: whether each paper arises from an unresolved question in the
+preceding work.}
+
+\subsection{Comparison with the ordinary doctoral standard}
+
+An ordinary Ph.D.\ is generally meant to establish that the candidate can
+identify an original research problem; master the relevant literature and
+mathematics; formulate definitions and conjectures; prove original results;
+detect and repair errors; communicate the work coherently; and sustain
+independent research. \note{State, with reference to the record, which of
+these capacities are evidenced and where. Address the conditions under which
+the work was produced (supervision or its absence) and whether they affect the
+evidence available or the standard applied.}
+
+\subsection{The identified deficiencies}
+
+\note{List the principal deficiencies, paper by paper, without softening them.
+Then apply the governing standard of Section~\ref{sec:questions}: are they
+evidence against doctoral competence, or the ordinary product of developing
+original research? Show that the valid contributions survive removal or
+reconstruction of the defective portions.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PAPER BLOCK A -- paper examined through review correspondence of record
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifcorrespondence
+\paperheader{1}{\note{Title of Paper 1}}{\note{Repository, DOI}}{sec:paper1}
+
+\textbf{Form of examination.} The technical examination of Paper~1 is the
+review correspondence identified in Section~\ref{sec:process}, deposited in
+full as Exhibit~A and summarized here for the record. References to ``the
+examiner'' in this section are to the \examinerRole\ acting as reviewer; the
+dual role is disclosed, and the correspondence is deposited in full rather than
+paraphrased so that the exchange can be assessed directly.
+
+\subsection{Course of the review}
+
+\note{Opening assessment and date.}
+
+\emph{\note{First argument of the paper}.} \note{Objection raised; how it was
+checked; what was adopted, rejected with reasons, or contributed by the
+reviewer with attribution.}
+
+\emph{\note{Second argument of the paper}.} \note{\dots}
+
+\subsection{Assessment and disposition}
+
+\note{What the correspondence shows about the review dynamic; how the
+manuscript changed; whether any findings remain open; points recorded as
+directions of continuing work rather than deficiencies.}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PAPER BLOCK B -- paper examined through an itemised technical audit
+%% Copy this block once per paper.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paperheader{2}{\note{Title of Paper 2}}{\note{Repository, DOI}}{sec:paper2}
+
+\subsection*{Technical examiner's verdict}
+
+\note{The sound core; where the defects concentrate; whether any is fatal and
+to what (a theorem, a section, or the paper); the recommended architecture of
+the repair.}
+
+\begin{response}
+\note{The candidate's global response: acceptance or contestation, the
+verification performed, and the dependency surface into companion papers.}
+\end{response}
+
+\subsection*{Findings and responses}
+
+\finding{Finding 1: \note{Short title}}
+\note{What the manuscript claims, where. What is actually the case, with the
+evidence. The consequence and the recommended repair.}
+\sev{\note{fatal to X / major / major but straightforward / repairable /
+minor / expositional}}
+\begin{response}
+\note{Accepted, contested, or accepted with refinement; what was verified;
+what the revision does.}
+\end{response}
+\disposition{\note{Adjudication in one or two sentences. End with
+``Correction scheduled.'' when a line is owed in the revision summary.}}
+
+\finding{Finding 2: \note{Short title of an endorsement}}
+\note{Endorsements carry no severity line.}
+\begin{response}
+\note{Response.}
+\end{response}
+\disposition{No correction required.}
+
+\subsection*{Further corrections identified by the candidate}
+
+\begin{response}
+\note{Defects disclosed by the candidate beyond the examination's findings.}
+\end{response}
+\disposition{The self-identified corrections are added to the revision
+schedule. Defects disclosed by the candidate beyond the examination's findings
+are weighed as evidence under the governing standard.}
+
+\subsection*{Corrected architecture adopted}
+
+\note{The revised paper, as a numbered sequence of its components.}
+
+\subsection*{Classification of results}
+
+\emph{Sound and substantial:} \note{\dots}
+\emph{Requiring correction:} \note{\dots}
+\emph{Incorrect as stated:} \note{\dots}
+
+% ====================================================================
+\clearpage
+\section{Concluding doctoral recommendation}\label{sec:recommendation}
+% ====================================================================
+
+\subsection{Answers to the examination questions}
+
+\textbf{Q1. Has the candidate demonstrated the independent ability to generate
+original, valuable doctoral-level scholarship?} \note{Yes / No.} \note{The
+grounds, drawn from the record and not from the number of papers alone.}
+
+\textbf{Q2. Do the identified deficiencies materially undermine that
+demonstration, or are they appropriately addressed through revision?}
+\note{Answer.} \note{The grounds: localisation of every fatal or major finding;
+survival of the load-bearing contributions; the evidential weight of the
+candidate's responses.}
+
+\subsection{The standard applied}
+
+The recommendation below applies the governing standard of
+Section~\ref{sec:questions}: the findings of the per-paper sections were
+classified by whether they are evidence against doctoral competence or the
+ordinary product of developing original research, appropriately corrected
+through revision, and the recommendation rests on that classification.
+
+\subsection{Recommendation}
+
+The \examinerRole\ recommends that the Institute:
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.5em]
+\item determine that the candidate has satisfied the requirements for
+      candidacy, where procedurally distinct from conferral;
+\item accept the submitted \numPapers-paper portfolio as the examined body of
+      work for the degree \degreeRoute;
+\item \note{optional:} waive the covering-document requirement
+      (Regulations, \regsWaiverSection), \note{with grounds};
+\item require correction of the defects identified in the examinations, as
+      scheduled in the revision summary of Section~\ref{sec:revisions},
+      incorporated into the official submitted versions of the papers;
+\item document the examination and revision record, of which this report and
+      its exhibits are the instrument; and
+\item \note{confer the degree once the corrected portfolio satisfies the
+      published requirements / alternative outcome}.
+\end{enumerate}
+
+\subsection{Final judgment}
+
+\note{One paragraph: the portfolio against the published requirement; the
+research independence demonstrated; the status of the deficiencies; what
+remains before conferral.}
+
+% ====================================================================
+\section{Revision summary}\label{sec:revisions}
+% ====================================================================
+
+The following corrections, accepted in the candidate's responses, are scheduled
+for incorporation into the official submitted versions of the papers before
+conferral. Dispositions: \corrected\ (statement or proof repaired); \restated\
+(claim reduced to what is proved); \withdrawn\ (removed, with any successor
+stated as an open problem); \qualified\ (hypotheses or terminology made
+explicit).
+
+\subsection*{Paper 2 (\note{short title})}
+\begin{itemize}[leftmargin=1.6em,itemsep=0.15em]
+\rev{\note{What changes, in one line}}{\corrected}
+\rev{\note{What changes}}{\restated}
+\rev{Candidate-identified: \note{what changes}}{\corrected}
+\end{itemize}
+
+%% Repeat one \subsection* per paper with scheduled corrections.
+
+% ====================================================================
+\section{Declarations}\label{sec:declarations}
+% ====================================================================
+%% Standard in examination records; complete every item, writing "None" where
+%% nothing applies.
+
+\subsection*{Relationships and interests}
+\note{Any prior or current professional, collaborative, institutional,
+financial or personal relationship between the \examinerRole, the technical
+examiner(s), the candidate, and the Institute; any dual role in the
+examination; and how each was managed.}
+
+\subsection*{Tools and assistance}
+\note{Software, computational tools and AI systems used in preparing the
+technical examinations or this report, the parts of the record they bear on,
+and how their output was independently checked.}
+
+% ====================================================================
+\section{Certification and signatures}\label{sec:signatures}
+% ====================================================================
+
+\subsection*{\examinerRole's certification}
+
+\note{What was independently reviewed.} By my signature I adopt the findings of
+this report, the answers to the two examination questions, and the
+recommendation of Section~\ref{sec:recommendation}; responsibility for the
+findings as adopted rests with me; and I submit the report to \board\ for
+resolution.
+
+\signatureblock{\examiner}{\examinerRole, \institution}
+  {{\small Academic affiliation: \examinerAffiliation} & \\}
+
+\subsection*{Candidate's acknowledgment}
+
+I acknowledge the findings of this report; I confirm that the responses
+embedded herein are mine and that the corrections scheduled in
+Section~\ref{sec:revisions} will be incorporated into the official submitted
+versions of the papers before the portfolio is represented as final; and I
+recuse myself from the board's resolution of this examination.
+
+\signatureblock{\candidate}{Candidate}{}
+
+% ====================================================================
+\ifexhibits
+\newpage
+\section*{Exhibits}
+\addcontentsline{toc}{section}{Exhibits}
+% ====================================================================
+
+\begin{description}[leftmargin=5.5em,style=nextline]
+\ifcorrespondence
+\item[Exhibit A.] Review correspondence of record for Paper~1: \note{medium,
+  parties, date range, page count}.
+\fi
+\item[Exhibit B.] Paper 1, version of record at examination (\note{DOI}).
+\item[Exhibit C.] Paper 2, version of record at examination (\note{DOI}).
+%% add one \item per paper, and one per technical examination if deposited
+\end{description}
+\fi
+
+\end{document}
